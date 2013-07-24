@@ -15,7 +15,7 @@
     },
 
     "build": {
-        "input": "js/app.js",
+        "input": "src/js/app.js",
         "dest": "dist/app.min.js",
         "outputWrapper": "",
         "exclude": [""]

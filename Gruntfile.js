@@ -101,7 +101,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    '<%= config.dist %>/app.min.css': 'less/app.less'
+                    '<%= config.dist %>/app.min.css': '<%= config.src %>/less/app.less'
                 },
                 options: {
                     yuicompress: true,
@@ -349,9 +349,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
-
-    grunt.registerTask('mantri', ['mantriDeps', 'mantriBuild']);
-
     // The default (DEV) task can be run just by typing "grunt" on the command line.
     grunt.registerTask('default', [
         'template:dev',
@@ -370,7 +367,7 @@ module.exports = function (grunt) {
         'htmlmin',
         'less:dist',
         'jshint',
-        'mantri'
+        'mantriBuild'
     ]);
 
 
