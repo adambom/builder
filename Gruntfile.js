@@ -105,7 +105,6 @@ module.exports = function (grunt) {
                 },
                 options: {
                     yuicompress: true,
-                    report: 'gzip',
                     compress: true
                 }
             }
@@ -330,6 +329,17 @@ module.exports = function (grunt) {
                     filter: 'isFile'
                 }]
             }
+        },
+
+        /*
+         * Analyze the size of our output
+         */
+        bytesize: {
+            dist: {
+                src: [
+                    'dist/*'
+                ]
+            }
         }
 
     });
@@ -348,6 +358,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-bytesize');
 
     // The default (DEV) task can be run just by typing "grunt" on the command line.
     grunt.registerTask('default', [
@@ -367,7 +378,8 @@ module.exports = function (grunt) {
         'htmlmin',
         'less:dist',
         'jshint',
-        'mantriBuild'
+        'mantriBuild',
+        'bytesize'
     ]);
 
 
