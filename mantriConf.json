@@ -1,0 +1,23 @@
+{
+    "baseUrl": "./",
+    
+    "libs": {
+        "modernizr": "bower_components/modernizr/modernizr",
+        "jquery": "bower_components/jquery/jquery",
+        "underscore": "bower_components/underscore/underscore",
+        "backbone": "bower_components/backbone/backbone"
+    },
+
+    "deps": {
+        "src": "js/",
+        "root": "./",
+        "dest": "deps.js"
+    },
+
+    "build": {
+        "input": "js/app.js",
+        "dest": "dist/app.min.js",
+        "outputWrapper": "",
+        "exclude": [""]
+    }
+}
