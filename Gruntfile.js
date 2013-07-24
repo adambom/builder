@@ -7,7 +7,8 @@ module.exports = function (grunt) {
 
     // Configurable paths and other variables. 
     var config = {
-        webroot: './',
+        webroot: 'web',
+        src: 'src',
         dist: 'dist',
         testroot: 'test',
         tstamp: '<%= grunt.template.today("ddmmyyyyhhMMss") %>',
@@ -64,20 +65,20 @@ module.exports = function (grunt) {
                 livereload: config.LIVE_PORT // Default livereload listening port.
             },
             tpl: {
-                files: ['tpl/**/*.tpl'],
+                files: ['<%= config.src %>/tpl/**/*.tpl'],
                 tasks: [
                     'template:dev'
                 ]
             },
             less: {
-                files: ['less/**/*.less'],
+                files: ['<%= config.src %>/less/**/*.less'],
                 tasks: [
                     'less:dev',
                     'csslint'
                 ]
             },
             js: {
-                files: ['js/**/*.js'],
+                files: ['<%= config.src %>/js/**/*.js'],
                 tasks: [
                     'mantriDeps',
                     'jshint'
@@ -95,7 +96,7 @@ module.exports = function (grunt) {
         less: {
             dev: {
                 files: {
-                    'css/app.css': 'less/app.less'
+                    '<%= config.webroot %>/css/app.css': '<%= config.src %>/less/app.less'
                 }
             },
             dist: {
@@ -141,7 +142,7 @@ module.exports = function (grunt) {
             // Define the files to lint.
             files: [
                 'Gruntfile.js',
-                'js/**/*.js' // Only process custom scripts, exclude libraries.
+                '<%= config.src %>/js/**/*.js' // Only process custom scripts, exclude libraries.
             ]
         },
 
@@ -153,7 +154,7 @@ module.exports = function (grunt) {
                 options: {
                     data: {
                         scripts: [{
-                            src: 'mantri.web.js',
+                            src: 'bower_components/mantri/dist/mantri.web.js',
                             'data-require': 'app',
                             'data-deps': './deps',
                             'data-config': './mantriConf'
@@ -166,8 +167,8 @@ module.exports = function (grunt) {
                     }
                 },
                 files: [{
-                    src: 'tpl/index.tpl',
-                    dest: 'index.html'
+                    src: '<%= config.src %>/tpl/index.tpl',
+                    dest: '<%= config.webroot %>/index.html'
                 }]
             },
             dist: {
@@ -182,7 +183,7 @@ module.exports = function (grunt) {
                     }
                 },
                 files: [{
-                    src: 'tpl/index.tpl',
+                    src: '<%= config.src %>/tpl/index.tpl',
                     dest: '<%= config.dist %>/index.html'
                 }]
             }
@@ -239,8 +240,8 @@ module.exports = function (grunt) {
                 root: '<%= config.webroot %>'
             },
             target: {
-                src: './js/',
-                dest: './deps.js'
+                src: '<%= config.webroot %>/js/',
+                dest: '<%= config.webroot %>/deps.js'
             }
         },
 
@@ -305,6 +306,30 @@ module.exports = function (grunt) {
                     'dist/index.html': 'dist/index.html'
                 }
             }
+        },
+
+        copy: {
+            mantri: {
+                files: [{
+                    src: 'mantri*',
+                    dest: '<%= config.webroot %>/'
+                }]
+            },
+            src: {
+                files: [{
+                    src: ['**/*.js'],
+                    dest: '<%= config.webroot %>/js/',
+                    cwd: '<%= config.src %>/js/',
+                    expand: true
+                }]
+            },
+            vendor: {
+                files: [{
+                    src: 'bower_components/**/*.js',
+                    dest: '<%= config.webroot %>/',
+                    filter: 'isFile'
+                }]
+            }
         }
 
     });
@@ -331,6 +356,7 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'template:dev',
         'less:dev',
+        'copy',
         'mantriDeps',
         'jshint',
         'connect',
