@@ -262,13 +262,13 @@ module.exports = function (grunt) {
             dev: {
                 src: '<%= config.webroot %>/mantri.web.js',
                 options: {
-                    specs: '<%= config.testroot %>/*Spec.js'
+                    specs: '<%= config.testroot %>/*-spec.js'
                 }
             },
             dist: {
                 src: '<%= config.dist %>/app.min.js',
                 options: {
-                    specs: '<%= config.testroot %>/*Spec.js'
+                    specs: '<%= config.testroot %>/*-spec.js'
                 }
             }
         },
@@ -302,7 +302,7 @@ module.exports = function (grunt) {
                     removeOptionalTags: true
                 },
                 files: {
-                    'dist/index.html': 'dist/index.html'
+                    '<%= config.dist %>/index.html': '<%= config.dist %>/index.html'
                 }
             }
         },
