@@ -1,7 +1,6 @@
 /*jslint node: true */
 'use strict';
 
-
 // Grunt configuration wrapper function.
 module.exports = function (grunt) {
 
@@ -11,36 +10,10 @@ module.exports = function (grunt) {
         src: 'src',
         dist: 'dist',
         testroot: 'test',
+        vendor: 'bower_components',
         tstamp: '<%= grunt.template.today("ddmmyyyyhhMMss") %>',
         LIVE_PORT: 35729,
-        WEB_PORT: 9001,
-        templateSettings: {
-            dev: {
-                data: {
-                    scripts: [{
-                        src: 'bower_components/mantri/dist/mantri.web.js',
-                        'data-require': 'app',
-                        'data-deps': './deps',
-                        'data-config': './mantriConf'
-                    }, {
-                        src: '//localhost:<%= config.LIVE_PORT %>/livereload.js'
-                    }],
-                    style: {
-                        href: 'css/app.css'
-                    }
-                }
-            },
-            dist: {
-                data: {
-                    scripts: [{
-                        src: 'app.min.js'
-                    }],
-                    style: {
-                        href: 'app.min.css'
-                    }
-                }
-            }
-        }
+        WEB_PORT: 9001
     };
 
     // Initialize our configuration object.
@@ -56,7 +29,6 @@ module.exports = function (grunt) {
          * Get the project metadata.
          */
         pkg: grunt.file.readJSON('package.json'),
-
 
         /*
          * Create a dynamic build header. 
@@ -177,14 +149,37 @@ module.exports = function (grunt) {
          */
         template: {
             dev: {
-                options: config.templateSettings.dev,
+                options: {
+                    data: {
+                        scripts: [{
+                            src: 'bower_components/mantri/dist/mantri.web.js',
+                            'data-require': 'app',
+                            'data-deps': './deps',
+                            'data-config': './mantriConf'
+                        }, {
+                            src: '//localhost:<%= config.LIVE_PORT %>/livereload.js'
+                        }],
+                        style: {
+                            href: 'css/app.css'
+                        }
+                    }
+                },
                 files: [{
                     src: '<%= config.src %>/tpl/index.tpl',
                     dest: '<%= config.webroot %>/index.html'
                 }]
             },
             dist: {
-                options: config.templateSettings.dist,
+                options: {
+                    data: {
+                        scripts: [{
+                            src: 'app.min.js'
+                        }],
+                        style: {
+                            href: 'app.min.css'
+                        }
+                    }
+                },
                 files: [{
                     src: '<%= config.src %>/tpl/index.tpl',
                     dest: '<%= config.dist %>/index.html'
@@ -263,18 +258,10 @@ module.exports = function (grunt) {
          * Grunt plugin for jasmine test runner.
          */
         jasmine: {
-            dev: {
-                src: '<%= config.dist %>/**/*.js',
-                options: {
-                    specs: '<%= config.testroot %>/**/*-spec.js'
-                }
-            },
             dist: {
                 src: '<%= config.dist %>/app.min.js',
                 options: {
-                    template: '<%= config.src %>/tpl/index.tpl',
-                    templateOptions: config.templateSettings.dist.data,
-                    specs: '<%= config.testroot %>/*-spec.js'
+                    specs: '<%= config.testroot %>/**/*-spec.js'
                 }
             }
         },
@@ -330,7 +317,7 @@ module.exports = function (grunt) {
             },
             vendor: {
                 files: [{
-                    src: 'bower_components/**/*.js',
+                    src: '<%= config.vendor %>/**/*.js',
                     dest: '<%= config.webroot %>/',
                     filter: 'isFile'
                 }]
@@ -385,6 +372,7 @@ module.exports = function (grunt) {
         'less:dist',
         'jshint',
         'mantriBuild',
+        'jasmine',
         'bytesize'
     ]);
 
