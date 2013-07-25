@@ -13,7 +13,34 @@ module.exports = function (grunt) {
         testroot: 'test',
         tstamp: '<%= grunt.template.today("ddmmyyyyhhMMss") %>',
         LIVE_PORT: 35729,
-        WEB_PORT: 9001
+        WEB_PORT: 9001,
+        templateSettings: {
+            dev: {
+                data: {
+                    scripts: [{
+                        src: 'bower_components/mantri/dist/mantri.web.js',
+                        'data-require': 'app',
+                        'data-deps': './deps',
+                        'data-config': './mantriConf'
+                    }, {
+                        src: '//localhost:<%= config.LIVE_PORT %>/livereload.js'
+                    }],
+                    style: {
+                        href: 'css/app.css'
+                    }
+                }
+            },
+            dist: {
+                data: {
+                    scripts: [{
+                        src: 'app.min.js'
+                    }],
+                    style: {
+                        href: 'app.min.css'
+                    }
+                }
+            }
+        }
     };
 
     // Initialize our configuration object.
@@ -150,37 +177,14 @@ module.exports = function (grunt) {
          */
         template: {
             dev: {
-                options: {
-                    data: {
-                        scripts: [{
-                            src: 'bower_components/mantri/dist/mantri.web.js',
-                            'data-require': 'app',
-                            'data-deps': './deps',
-                            'data-config': './mantriConf'
-                        }, {
-                            src: '//localhost:<%= config.LIVE_PORT %>/livereload.js'
-                        }],
-                        style: {
-                            href: 'css/app.css'
-                        }
-                    }
-                },
+                options: config.templateSettings.dev,
                 files: [{
                     src: '<%= config.src %>/tpl/index.tpl',
                     dest: '<%= config.webroot %>/index.html'
                 }]
             },
             dist: {
-                options: {
-                    data: {
-                        scripts: [{
-                            src: 'app.min.js'
-                        }],
-                        style: {
-                            href: 'app.min.css'
-                        }
-                    }
-                },
+                options: config.templateSettings.dist,
                 files: [{
                     src: '<%= config.src %>/tpl/index.tpl',
                     dest: '<%= config.dist %>/index.html'
@@ -260,14 +264,16 @@ module.exports = function (grunt) {
          */
         jasmine: {
             dev: {
-                src: '<%= config.webroot %>/mantri.web.js',
+                src: '<%= config.dist %>/**/*.js',
                 options: {
-                    specs: '<%= config.testroot %>/*-spec.js'
+                    specs: '<%= config.testroot %>/**/*-spec.js'
                 }
             },
             dist: {
                 src: '<%= config.dist %>/app.min.js',
                 options: {
+                    template: '<%= config.src %>/tpl/index.tpl',
+                    templateOptions: config.templateSettings.dist.data,
                     specs: '<%= config.testroot %>/*-spec.js'
                 }
             }
