@@ -79,11 +79,18 @@ module.exports = function (grunt) {
                 files: ['<%= config.src %>/js/**/*.js'],
                 tasks: [
                     'mantriDeps',
-                    'jshint'
+                    'jshint',
+                    'copy:src',
+                    'copy:mantri',
+                    'jasmine:dev'
                 ],
                 options: {
                     livereload: true
                 }
+            },
+            jasmine: {
+                files: ['<%= config.testroot %>/**/*-spec.js'],
+                tasks: ['jasmine:dev']
             },
             build: {
                 files: ['<%= config.dist %>/**/*'],
@@ -244,7 +251,7 @@ module.exports = function (grunt) {
             options: {
                 root: '<%= config.webroot %>'
             },
-            target: {
+            dev: {
                 src: '<%= config.webroot %>/js/',
                 dest: '<%= config.webroot %>/deps.js'
             }
@@ -265,6 +272,20 @@ module.exports = function (grunt) {
          * Grunt plugin for jasmine test runner.
          */
         jasmine: {
+            dev: {
+                src: [],
+                options: {
+                    specs: '<%= config.testroot %>/**/*-spec.js',
+                    template: '<%= config.testroot %>/test.tmpl',
+                    outfile: '<%= config.webroot %>/_SpecRunner.html',
+                    templateOptions: {
+                        mantriPath: '<%= config.vendor %>/mantri/dist/mantri.web.js',
+                        depsPath: 'deps',
+                        requirePath: 'app',
+                        configPath: 'mantriConf'
+                    }
+                }
+            },
             dist: {
                 src: '<%= config.dist %>/app.min.js',
                 options: {
@@ -388,6 +409,7 @@ module.exports = function (grunt) {
         'copy',
         'mantriDeps',
         'jshint',
+        'jasmine:dev',
         'connect',
         'notify:server',
         'watch'
@@ -401,7 +423,7 @@ module.exports = function (grunt) {
         'less:dist',
         'jshint',
         'mantriBuild',
-        'jasmine',
+        'jasmine:dist',
         'bytesize',
         'notify:build'
     ]);
