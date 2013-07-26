@@ -4,7 +4,7 @@
     "libs": {
         "modernizr": "bower_components/modernizr/modernizr",
         "jquery": "bower_components/jquery/jquery",
-        "underscore": "bower_components/underscore/underscore",
+        "lodash": "bower_components/lodash/lodash",
         "backbone": "bower_components/backbone/backbone"
     },
 
