@@ -390,7 +390,9 @@ module.exports = function (grunt) {
                 dest: '<%= config.custom %>/lodash.custom.js'
             },
             options: grunt.file.readJSON('lodashConf.json')
-        }
+        },
+
+        modernizr: grunt.file.readJSON('modernizrConf.json')
     });
 
 
@@ -410,6 +412,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bytesize');
     grunt.loadNpmTasks('grunt-notify');
     grunt.loadNpmTasks('grunt-lodash');
+    grunt.loadNpmTasks('grunt-modernizr');
 
     // The default (DEV) task can be run just by typing "grunt" on the command line.
     grunt.registerTask('default', [
@@ -439,7 +442,8 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('customBuild', [
-        'lodash'
+        'lodash',
+        'modernizr'
     ]);
 
 
