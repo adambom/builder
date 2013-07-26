@@ -126,24 +126,6 @@ module.exports = function (grunt) {
 
 
         /*
-         * Lint CSS files.
-         */
-        csslint: {
-            options: {
-                csslintrc: '.csslintrc' // Get CSSLint options from external file.
-            },
-            strict: {
-                options: {}
-                // src: ['<%= config.webroot %>/css/*.css']
-            },
-            lax: {
-                options: {},
-                src: ['<%= config.webroot %>/css/*.css']
-            }
-        },
-
-
-        /*
          * Validate files with JSHint.
          */
         jshint: {
@@ -401,7 +383,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('mantri');
     grunt.loadNpmTasks('grunt-template');
