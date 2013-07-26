@@ -10,6 +10,7 @@ module.exports = function (grunt) {
         src: 'src',
         dist: 'dist',
         testroot: 'test',
+        custom: 'custom-libs',
         vendor: 'bower_components',
         tstamp: '<%= grunt.template.today("ddmmyyyyhhMMss") %>',
         LIVE_PORT: 35729,
@@ -169,7 +170,7 @@ module.exports = function (grunt) {
                             src: 'bower_components/mantri/dist/mantri.web.js',
                             'data-require': 'app',
                             'data-deps': './deps',
-                            'data-config': './mantriConf'
+                            'data-config': './mantriConf.dev'
                         }, {
                             src: '//localhost:<%= config.LIVE_PORT %>/livereload.js'
                         }],
@@ -263,7 +264,7 @@ module.exports = function (grunt) {
                 debug: true
             },
             dist: {
-                src: 'mantriConf.json',
+                src: 'mantriConf.dist.json',
                 dest: '<%= config.dist %>/app.min.js'
             }
         },
@@ -282,7 +283,7 @@ module.exports = function (grunt) {
                         mantriPath: '<%= config.vendor %>/mantri/dist/mantri.web.js',
                         depsPath: 'deps',
                         requirePath: 'app',
-                        configPath: 'mantriConf'
+                        configPath: 'mantriConf.dev'
                     }
                 }
             },
@@ -382,6 +383,13 @@ module.exports = function (grunt) {
                     message: 'Ready for deployment'
                 }
             }
+        },
+
+        lodash: {
+            target: {
+                dest: '<%= config.custom %>/lodash.custom.js'
+            },
+            options: grunt.file.readJSON('lodashConf.json')
         }
     });
 
@@ -401,6 +409,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-bytesize');
     grunt.loadNpmTasks('grunt-notify');
+    grunt.loadNpmTasks('grunt-lodash');
 
     // The default (DEV) task can be run just by typing "grunt" on the command line.
     grunt.registerTask('default', [
@@ -422,10 +431,15 @@ module.exports = function (grunt) {
         'htmlmin',
         'less:dist',
         'jshint',
+        'customBuild',
         'mantriBuild',
         'jasmine:dist',
         'bytesize',
         'notify:build'
+    ]);
+
+    grunt.registerTask('customBuild', [
+        'lodash'
     ]);
 
 
