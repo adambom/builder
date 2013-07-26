@@ -246,7 +246,7 @@ module.exports = function (grunt) {
                 debug: true
             },
             dist: {
-                src: 'mantriConf.dist.json',
+                src: 'config/mantriConf.dist.json',
                 dest: '<%= config.dist %>/app.min.js'
             }
         },
@@ -314,7 +314,7 @@ module.exports = function (grunt) {
         copy: {
             mantri: {
                 files: [{
-                    src: 'mantri*',
+                    src: 'config/mantri*',
                     dest: '<%= config.webroot %>/'
                 }]
             },
@@ -371,10 +371,10 @@ module.exports = function (grunt) {
             target: {
                 dest: '<%= config.custom %>/lodash.custom.js'
             },
-            options: grunt.file.readJSON('lodashConf.json')
+            options: grunt.file.readJSON('config/lodashConf.json')
         },
 
-        modernizr: grunt.file.readJSON('modernizrConf.json')
+        modernizr: grunt.file.readJSON('config/modernizrConf.json')
     });
 
 
