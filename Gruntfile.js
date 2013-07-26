@@ -276,7 +276,7 @@ module.exports = function (grunt) {
                 src: [],
                 options: {
                     specs: '<%= config.testroot %>/**/*-spec.js',
-                    template: '<%= config.testroot %>/test.tmpl',
+                    template: '<%= config.testroot %>/test.tpl',
                     outfile: '<%= config.webroot %>/_SpecRunner.html',
                     templateOptions: {
                         mantriPath: '<%= config.vendor %>/mantri/dist/mantri.web.js',
