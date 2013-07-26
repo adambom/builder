@@ -72,8 +72,7 @@ module.exports = function (grunt) {
             less: {
                 files: ['<%= config.src %>/less/**/*.less'],
                 tasks: [
-                    'less:dev',
-                    'csslint'
+                    'less:dev'
                 ]
             },
             js: {
@@ -85,6 +84,14 @@ module.exports = function (grunt) {
                 options: {
                     livereload: true
                 }
+            },
+            build: {
+                files: ['<%= config.dist %>/**/*'],
+                tasks: ['notify:build']
+            },
+            watch: {
+                files: ['<%= config.webroot %>/**/*'],
+                tasks: ['notify:watch']
             }
         },
 
@@ -333,8 +340,28 @@ module.exports = function (grunt) {
                     'dist/*'
                 ]
             }
-        }
+        },
 
+        notify: {
+            server: {
+                options: {
+                    title: 'Watching for changes',
+                    message: 'Server running on localhost:<%= config.WEB_PORT %>'
+                }
+            },
+            watch: {
+                options: {
+                    title: 'Build success',
+                    message: 'Watching for changes'
+                }
+            },
+            build: {
+                options: {
+                    title: 'Build success',
+                    message: 'Ready for deployment'
+                }
+            }
+        }
     });
 
 
@@ -352,6 +379,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-bytesize');
+    grunt.loadNpmTasks('grunt-notify');
 
     // The default (DEV) task can be run just by typing "grunt" on the command line.
     grunt.registerTask('default', [
@@ -361,6 +389,7 @@ module.exports = function (grunt) {
         'mantriDeps',
         'jshint',
         'connect',
+        'notify:server',
         'watch'
     ]);
 
@@ -373,7 +402,8 @@ module.exports = function (grunt) {
         'jshint',
         'mantriBuild',
         'jasmine',
-        'bytesize'
+        'bytesize',
+        'notify:build'
     ]);
 
 
@@ -381,5 +411,4 @@ module.exports = function (grunt) {
     grunt.registerTask('icons', [
         'grunticon'
     ]);
-
 };
